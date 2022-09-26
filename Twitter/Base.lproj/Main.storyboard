@@ -33,6 +33,10 @@
                                     <action selector="onLoginButton:" destination="YjM-Dd-t4v" eventType="touchUpInside" id="EAL-DH-m0R"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="Twitter_Logo_Blue" translatesAutoresizingMaskIntoConstraints="NO" id="aVF-l4-9HS">
+                                <rect key="frame" x="128" y="194" width="119" height="109"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="cXl-3U-9oR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -144,6 +148,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Twitter_Logo_Blue" width="400" height="400"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
