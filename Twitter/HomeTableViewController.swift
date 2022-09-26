@@ -13,16 +13,44 @@ class HomeTableViewController: UITableViewController {
     var tweetArray = [NSDictionary]()
     var numberOfTweets: Int!
     
+    let myRefreshControler = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTweet()
+        
+        myRefreshControler.addTarget(self, action: #selector(loadTweet), for: .valueChanged)
+        tableView.refreshControl = myRefreshControler
     }
 
     
-    func loadTweet(){
+    @objc func loadTweet(){
+        numberOfTweets = 20
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let myParams = ["count": 10]
+        let myParams = ["count": numberOfTweets]
+
+        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: { (tweets: [NSDictionary]) in
+
+            self.tweetArray.removeAll()
+            for tweet in tweets {
+                self.tweetArray.append(tweet)
+            }
+
+            self.tableView.reloadData()
+            self.myRefreshControler.endRefreshing()
+
+        }, failure: { (Error) in
+            print(Error.localizedDescription)
+            print("Could Not retrive tweets! oh no!!")
+        })
+
+    }
+    
+    func loadMoreTweets(){
+        let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+        numberOfTweets = numberOfTweets + 20
+        
+        let myParams = ["count": numberOfTweets]
 
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success: { (tweets: [NSDictionary]) in
 
@@ -37,7 +65,12 @@ class HomeTableViewController: UITableViewController {
             print(Error.localizedDescription)
             print("Could Not retrive tweets! oh no!!")
         })
-
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == tweetArray.count{
+            loadMoreTweets()
+        }
     }
     
     @IBAction func onLogout(_ sender: Any) {
